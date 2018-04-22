@@ -1,6 +1,8 @@
 package kr.java.coffee.dto;
 
-public class Sale {
+import kr.java.swinglibrary.component.ToArray;
+
+public class Sale implements ToArray{
 	private int no;
 	private Product product; // 제품
 	private int saleCnt; // 판매수량
@@ -72,6 +74,21 @@ public class Sale {
 	@Override
 	public String toString() {
 		return String.format("Sale [%s, %s, %s, %s, %s]", no, product, saleCnt, marginRate, saleDetail);
+	}
+
+	@Override
+	public Object[] toArray() {
+		if (saleDetail == null) {
+			return new Object[] { no, product.getCode(), saleCnt, marginRate+"%" };
+		}else {
+			return new Object[] { saleDetail.getRank(), product.getCode(), product.getName(), 
+					String.format("%,d", product.getPrice()), saleCnt, 
+					String.format("%,d", saleDetail.getSupplyPrice()), 
+					String.format("%,d", saleDetail.getAddTax()),
+					String.format("%,d", saleDetail.getSalePrice()), 
+					marginRate+"%", 
+					String.format("%,d", saleDetail.getMarginPrice()) };
+		}
 	}
 
 }

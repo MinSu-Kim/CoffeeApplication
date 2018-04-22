@@ -7,7 +7,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import kr.java.coffee.service.ProductService;
+import kr.java.coffee.service.SaleService;
 import kr.java.coffee.ui.content.ProductTablePanel;
+import kr.java.coffee.ui.content.SaleTablePanel;
 import kr.java.swinglibrary.component.AbstractTablePanel;
 
 @SuppressWarnings("serial")
@@ -36,7 +38,8 @@ public class CoffeeManager extends JFrame{
 		pdtTable.loadData(ProductService.getInstance().selectProductAll());
 		topTable.add(pdtTable);
 		
-		JPanel saleTable = new JPanel();
+		AbstractTablePanel saleTable = new SaleTablePanel();
+		saleTable.loadData(SaleService.getInstance().selectSaleByAll());
 		topTable.add(saleTable);
 		
 		JPanel salePriceRankTable = new JPanel();
