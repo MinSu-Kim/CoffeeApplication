@@ -1,6 +1,8 @@
 package kr.java.coffee.dto;
 
-public class Product {
+import kr.java.swinglibrary.component.ToArray;
+
+public class Product implements ToArray{
 	private String code;
 	private String name;
 	private int price;
@@ -72,6 +74,11 @@ public class Product {
 		} else if (!code.equals(other.code))
 			return false;
 		return true;
+	}
+
+	@Override
+	public Object[] toArray() {
+		return new Object[] {code, name, String.format("%,d", price)};
 	}
 	
 }
