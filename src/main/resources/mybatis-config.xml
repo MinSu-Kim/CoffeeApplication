@@ -9,6 +9,7 @@
 	</settings>
 	
 	<typeAliases>
+		<package name="kr.java.coffee.dto" />
 	</typeAliases>
 	
 	<typeHandlers>
@@ -27,5 +28,6 @@
 	</environments>
 
 	<mappers>
+		<mapper resource="kr/java/coffee/mappers/ProductMapper.xml"/>
 	</mappers>
 </configuration>
