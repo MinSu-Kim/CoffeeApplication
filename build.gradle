@@ -1,0 +1,39 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility= 1.8 //컴파일할 때 적용할 java code의 jdkversion 지정
+
+//소스 인코딩지정
+tasks.withType(JavaCompile) {
+   options.encoding= 'UTF-8'
+}
+
+mainClassName = 'kr.java.coffee.Main'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+	// http://mvnrepository.com 에서 검색
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.44'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.6.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.6.2'
+    compile group: 'org.mybatis', name: 'mybatis', version: 'latest.release'
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+    compile fileTree(dir:'libs', include:['*.jar'])
+}
+
+jar {
+	version = 1.0
+	baseName= 'CoffeeManager'
+	appendix = 'bin'
+	manifest{
+		attributes 'Title': baseName, 'Version': version, 'Main-Class': mainClassName
+	}
+	dependsOn configurations.runtime// 실행 가능한jar 파일설정
+}
+
+javadoc {
+    options.encoding = 'UTF-8'
+}
