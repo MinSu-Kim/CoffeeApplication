@@ -3,80 +3,45 @@ package kr.java.coffee.service;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.logging.Log;
-import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 
 import kr.java.coffee.dto.Sale;
-import kr.java.coffee.util.MyBatisSqlSessionFactory;
 
-public class SaleService {
-	private static final Log log = LogFactory.getLog(SaleService.class);
+public class SaleService extends DaoService {
 	private static final SaleService instance = new SaleService();
-	private SqlSessionFactory sessionFactory;
-	
 	private String namespace = "kr.java.coffee.dao.SaleDao";
 	
-	private SaleService() {
-		sessionFactory = MyBatisSqlSessionFactory.getSqlSessionFactory();
-	}
+	private SaleService() {}
 
 	public static SaleService getInstance() {
 		return instance;
 	}
 
-	public List<Sale> selectSaleByAll(){
-		log.debug("selectSaleByAll()");
-		try(SqlSession sqlSession = sessionFactory.openSession()){
-			return sqlSession.selectList(namespace + ".selectSaleByAll");
-		}
-	}
-	
-	public Sale selectSaleByNo(Sale sale) {
-		log.debug("selectSaleByNo()");
-		try(SqlSession sqlSession = sessionFactory.openSession()){
-			return sqlSession.selectOne(namespace + ".selectSaleByNo", sale);
-		}
-	}
-	
-	public int insertSale(Sale sale) {
-		log.debug("insertSale()");
-		try(SqlSession sqlSession = sessionFactory.openSession()){
-			int res = sqlSession.insert(namespace+".insertSale", sale);
-			sqlSession.commit();
-			return res;
-		}
-	}
-	
-	public int updateSale(Sale sale) {
-		try(SqlSession sqlSession = sessionFactory.openSession()){
-			int res = sqlSession.update(namespace+".updateSale", sale);
-			sqlSession.commit();
-			return res;
-		}
-	}
-	
-	public int deleteSale(Sale sale) {
-		log.debug("deleteSale()");
-		try(SqlSession sqlSession = sessionFactory.openSession()){
-			int res = sqlSession.delete(namespace+".deleteSale", sale);
-			sqlSession.commit();
-			return res;
-		}
-	}
-	
-	public List<Sale> callSaleDetail(Map<String, Boolean> map){
-		log.debug("callSaleDetail()");
-		try(SqlSession sqlSession = sessionFactory.openSession()){
-			return sqlSession.selectList(namespace + ".callSaleDetail", map);
-		}
+	public List<Sale> selectSaleByAll() {
+		return processQueryList((SqlSession sqlSession)->sqlSession.selectList(namespace + ".selectSaleByAll"), "selectSaleByAll");
 	}
 
-	public List<Map<String, Object>> getTotal(){
-		log.debug("getTotal()");
-		try(SqlSession sqlSession = sessionFactory.openSession()){
-			return sqlSession.selectList(namespace + ".getTotal");
-		}
+	public Sale selectSaleByNo(Sale sale) {
+		return processQueryItem((SqlSession sqlSession)->sqlSession.selectOne(namespace + ".selectSaleByNo", sale), "selectSaleByNo");
+	}
+
+	public int insertSale(Sale sale) {
+		return processQueryUpdate((SqlSession sqlSession)->sqlSession.insert(namespace+".insertSale", sale), "insertProduct");
+	}
+
+	public int updateSale(Sale sale) {
+		return processQueryUpdate((SqlSession sqlSession)->sqlSession.update(namespace+".updateSale", sale), "updateSale");
+	}
+
+	public int deleteSale(Sale sale) {
+		return processQueryUpdate((SqlSession sqlSession)->sqlSession.delete(namespace+".deleteSale", sale), "deleteSale");
+	}
+
+	public List<Sale> callSaleDetail(Map<String, Boolean> map) {
+		return processQueryList((SqlSession sqlSession)->sqlSession.selectList(namespace + ".callSaleDetail", map), "callSaleDetail");
+	}
+
+	public List<Map<String, Object>> getTotal() {
+		return processQueryList((SqlSession sqlSession)->sqlSession.selectList(namespace + ".getTotal"), "getTotal");	
 	}
 }
