@@ -18,14 +18,3 @@ public class Main {
 		});
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
