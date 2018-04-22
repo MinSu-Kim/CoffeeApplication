@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%5p [%t] - %m%n" />
+		</Console>
+		<File name="file" fileName="./logs/swing_library.log" append="true">
+			<PatternLayout pattern="[%-5level] [%d{yyyy-MM-dd HH:mm:ss}] %F - %m%n" />
+		</File>
+	</Appenders>
+
+	<Loggers>
+		<Logger name="kr.java.coffee" level="trace" additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="file" />
+		</Logger>
+	</Loggers>
+</Configuration>
