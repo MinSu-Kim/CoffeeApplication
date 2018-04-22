@@ -29,5 +29,6 @@
 
 	<mappers>
 		<mapper resource="kr/java/coffee/mappers/ProductMapper.xml"/>
+		<mapper resource="kr/java/coffee/mappers/SaleMapper.xml"/>
 	</mappers>
 </configuration>

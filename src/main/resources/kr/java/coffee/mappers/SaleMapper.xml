@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.java.coffee.dao.SaleDao">
+
+	<resultMap type="Sale" id="saleResult">
+		<id property="no" column="no" />
+		<result property="product.code" column="code" />
+		<result property="saleCnt" column="saleCnt" />
+		<result property="marginRate" column="marginRate" />
+	</resultMap>
+
+	<sql id="selectSql">
+		select no, code, saleCnt, marginRate from sale
+	</sql>
+
+	<sql id="insertSql">
+		insert into sale values(#{no}, #{product.code}, #{saleCnt},
+		#{marginRate})
+	</sql>
+
+	<sql id="deleteSql">
+		delete from sale
+	</sql>
+
+	<sql id="updateSql">
+		update sale set code=#{product.code}, saleCnt=#{saleCnt},
+		marginRate=#{marginRate}
+	</sql>
+
+	<sql id="whereSql">
+		<where>
+			<if test="no != null">
+				no=#{no}
+			</if>
+		</where>
+	</sql>
+
+	<select id="selectSaleByAll" resultMap="saleResult">
+		<include refid="selectSql" />
+	</select>
+
+	<select id="selectSaleByNo" parameterType="Sale" resultMap="saleResult">
+		<include refid="selectSql" />
+		<include refid="whereSql" />
+	</select>
+
+	<insert id="insertSale" parameterType="Sale">
+		<include refid="insertSql" />
+	</insert>
+
+	<delete id="deleteSale" parameterType="Sale">
+		<include refid="deleteSql" />
+		<include refid="whereSql" />
+	</delete>
+
+	<update id="updateSale" parameterType="Sale">
+		<include refid="updateSql" />
+		<include refid="whereSql" />
+	</update>
+ 
+	<resultMap type="Sale" id="saleDetailResult" extends="saleResult">
+		<result property="saleDetail.rank" column="rank"/>
+		<result property="product.name" column="name"/>
+		<result property="product.price" column="price"/>
+		<result property="saleDetail.supplyPrice" column="supplyPrice" />
+		<result property="saleDetail.addTax" column="addTax" />
+		<result property="saleDetail.salePrice" column="salePrice" />
+		<result property="saleDetail.marginPrice" column="marginPrice" />
+	</resultMap> 
+	
+ 	<select id="callSaleDetail" statementType="CALLABLE" parameterType="HashMap" resultMap="saleDetailResult">			
+		{call proc_saledetail_orderby(#{isSalePrice, mode=IN, jdbcType=BOOLEAN})};
+	</select> 
+	
+	<select id="getTotal" resultType="HashMap">
+		{call proc_sale_stat()}
+	</select>
+</mapper>

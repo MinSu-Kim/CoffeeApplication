@@ -5,7 +5,8 @@ public class Sale {
 	private Product product; // 제품
 	private int saleCnt; // 판매수량
 	private int marginRate; // 마진율
-
+	private SaleDetail saleDetail;
+	
 	public Sale() {
 	}
 
@@ -18,6 +19,14 @@ public class Sale {
 		this.product = product;
 		this.saleCnt = saleCnt;
 		this.marginRate = marginRate;
+	}
+
+	public Sale(int no, Product product, int saleCnt, int marginRate, SaleDetail saleDetail) {
+		this.no = no;
+		this.product = product;
+		this.saleCnt = saleCnt;
+		this.marginRate = marginRate;
+		this.saleDetail = saleDetail;
 	}
 
 	public int getNo() {
@@ -52,9 +61,17 @@ public class Sale {
 		this.marginRate = marginRate;
 	}
 
+	public SaleDetail getSaleDetail() {
+		return saleDetail;
+	}
+
+	public void setSaleDetail(SaleDetail saleDetail) {
+		this.saleDetail = saleDetail;
+	}
+
 	@Override
 	public String toString() {
-		return String.format("Sale [%s, %s, %s, %s]", no, product, saleCnt, marginRate);
+		return String.format("Sale [%s, %s, %s, %s, %s]", no, product, saleCnt, marginRate, saleDetail);
 	}
 
 }
