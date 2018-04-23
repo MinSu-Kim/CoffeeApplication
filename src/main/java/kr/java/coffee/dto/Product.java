@@ -48,7 +48,7 @@ public class Product implements ToArray{
 
 	@Override
 	public String toString() {
-		return String.format("Product [%s, %s, %s]", code, name, price);
+		return String.format("%s(%s - %s)", code, name, price);
 	}
 	
 	@Override

@@ -16,6 +16,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
 
 import kr.java.coffee.dto.Product;
+import kr.java.coffee.dto.Sale;
 import kr.java.coffee.service.ProductService;
 import kr.java.coffee.service.SaleService;
 import kr.java.coffee.ui.content.ProductTablePanel;
@@ -28,15 +29,22 @@ import kr.java.swinglibrary.component.AbstractTablePanel;
 public class CoffeeManager extends JFrame implements ActionListener, Observer {
 	private JPanel contentPane;
 	private AbstractTablePanel pdtTable;
+	private AbstractTablePanel saleTable;
+	
 	private AbstractTablePanel salePriceRankTable;
 	private AbstractTablePanel marginPriceRankTable;
-	private RegProductUI regProductUi;
-
+	
+	private RegProductUI regProductUi;	
+	private RegSaleUI regSaleUi;
+	
 	public CoffeeManager() {
 		initComponent();
 
 		regProductUi = RegProductUI.getInstance();
 		regProductUi.attach(this);
+		
+		regSaleUi = RegSaleUI.getInstance();
+		regSaleUi.attach(this);
 		
 		update();
 	}
@@ -62,8 +70,9 @@ public class CoffeeManager extends JFrame implements ActionListener, Observer {
 		pdtTable.setPopupMenu(createProductPopUpMenu());
 		topTable.add(pdtTable);
 
-		AbstractTablePanel saleTable = new SaleTablePanel();
+		saleTable = new SaleTablePanel();
 		saleTable.loadData(SaleService.getInstance().selectSaleByAll());
+		saleTable.setPopupMenu(createSalePopUpMenu());
 		topTable.add(saleTable);
 
 		salePriceRankTable = new SaleDetailTablePanel(true);
@@ -73,19 +82,52 @@ public class CoffeeManager extends JFrame implements ActionListener, Observer {
 		contentPane.add(marginPriceRankTable);
 	}
 
-	private JPopupMenu createProductPopUpMenu() {
+	private JPopupMenu createSalePopUpMenu() {
 		JPopupMenu popMenu = new JPopupMenu();
 		JMenuItem delItem = new JMenuItem("삭제");
-		delItem.addActionListener(popUpMenuListener);
+		delItem.addActionListener(popUpSaleMenuListener);
 		popMenu.add(delItem);
 
 		JMenuItem updateItem = new JMenuItem("수정");
-		updateItem.addActionListener(popUpMenuListener);
+		updateItem.addActionListener(popUpSaleMenuListener);
+		popMenu.add(updateItem);
+		return popMenu;
+	}
+	
+	ActionListener popUpSaleMenuListener = new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getActionCommand().equals("삭제")) {
+				JOptionPane.showMessageDialog(null, e.getActionCommand());
+				SaleService.getInstance().deleteSale(new Sale((int)saleTable.getSelectedNo()));
+				saleTable.removeRow();
+				update();
+			}
+			if (e.getActionCommand().equals("수정")) {
+				Sale sale = SaleService.getInstance().selectSaleByNo(new Sale((int)saleTable.getSelectedNo()));
+				regSaleUi.setTitle("판매현황 수정");
+				regSaleUi.getProductLoad();
+				regSaleUi.setSale(sale);
+				regSaleUi.setTable(saleTable);
+				regSaleUi.setVisible(true);
+			}			
+		}
+	};
+	
+	private JPopupMenu createProductPopUpMenu() {
+		JPopupMenu popMenu = new JPopupMenu();
+		JMenuItem delItem = new JMenuItem("삭제");
+		delItem.addActionListener(popUpProductMenuListener);
+		popMenu.add(delItem);
+
+		JMenuItem updateItem = new JMenuItem("수정");
+		updateItem.addActionListener(popUpProductMenuListener);
 		popMenu.add(updateItem);
 		return popMenu;
 	}
 
-	ActionListener popUpMenuListener = new ActionListener() {
+	ActionListener popUpProductMenuListener = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("삭제")) {
@@ -106,6 +148,7 @@ public class CoffeeManager extends JFrame implements ActionListener, Observer {
 			}
 		}
 	};
+
 
 	private void createMenu() {
 		JMenuBar menuBar = new JMenuBar();
@@ -144,6 +187,11 @@ public class CoffeeManager extends JFrame implements ActionListener, Observer {
 			regProductUi.setVisible(true);
 		}
 		if (e.getActionCommand().equals("판매현황 등록")) {
+			regSaleUi.setTitle("판매현황 등록");
+			regSaleUi.clearValue();
+			regSaleUi.setTable(saleTable);
+			regSaleUi.getProductLoad();
+			regSaleUi.setVisible(true);
 		}
 	}
 
