@@ -24,12 +24,21 @@ import kr.java.coffee.ui.content.SaleTablePanel;
 import kr.java.swinglibrary.component.AbstractTablePanel;
 
 @SuppressWarnings("serial")
-public class CoffeeManager extends JFrame implements ActionListener {
+
+public class CoffeeManager extends JFrame implements ActionListener, Observer {
 	private JPanel contentPane;
 	private AbstractTablePanel pdtTable;
+	private AbstractTablePanel salePriceRankTable;
+	private AbstractTablePanel marginPriceRankTable;
+	private RegProductUI regProductUi;
 
 	public CoffeeManager() {
 		initComponent();
+
+		regProductUi = RegProductUI.getInstance();
+		regProductUi.attach(this);
+		
+		update();
 	}
 
 	private void initComponent() {
@@ -57,17 +66,11 @@ public class CoffeeManager extends JFrame implements ActionListener {
 		saleTable.loadData(SaleService.getInstance().selectSaleByAll());
 		topTable.add(saleTable);
 
-		AbstractTablePanel salePriceRankTable = new SaleDetailTablePanel(true);
+		salePriceRankTable = new SaleDetailTablePanel(true);
 		contentPane.add(salePriceRankTable);
-
-		Map<String, Boolean> map = new HashMap<>();
-		map.put("isSalePrice", true);
-		salePriceRankTable.loadData(SaleService.getInstance().callSaleDetail(map));
-
-		AbstractTablePanel marginPriceRankTable = new SaleDetailTablePanel(false);
+		
+		marginPriceRankTable = new SaleDetailTablePanel(false);
 		contentPane.add(marginPriceRankTable);
-		map.put("isSalePrice", false);
-		marginPriceRankTable.loadData(SaleService.getInstance().callSaleDetail(map));
 	}
 
 	private JPopupMenu createProductPopUpMenu() {
@@ -86,16 +89,15 @@ public class CoffeeManager extends JFrame implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("삭제")) {
-				try{
+				try {
 					ProductService.getInstance().deleteProduct(new Product((String) pdtTable.getSelectedNo()));
 					pdtTable.removeRow();
-				}catch(RuntimeException e1) {
+				} catch (RuntimeException e1) {
 					JOptionPane.showMessageDialog(null, "해당 제품이 판매현황에 존재합니다.");
 				}
 			}
 			if (e.getActionCommand().equals("수정")) {
 				Product pdt = ProductService.getInstance().selectProductByNo(new Product((String) pdtTable.getSelectedNo()));
-				RegProductUI regProductUi = RegProductUI.getInstance();
 				regProductUi.setTitle("상품 수정");
 				regProductUi.setProduct(pdt);
 				regProductUi.enableCodeTf(false);
@@ -104,7 +106,7 @@ public class CoffeeManager extends JFrame implements ActionListener {
 			}
 		}
 	};
-	
+
 	private void createMenu() {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -143,5 +145,15 @@ public class CoffeeManager extends JFrame implements ActionListener {
 		}
 		if (e.getActionCommand().equals("판매현황 등록")) {
 		}
+	}
+
+	@Override
+	public void update() {
+		Map<String, Boolean> map = new HashMap<>();
+		map.put("isSalePrice", true);
+		salePriceRankTable.loadData(SaleService.getInstance().callSaleDetail(map));
+
+		map.put("isSalePrice", false);
+		marginPriceRankTable.loadData(SaleService.getInstance().callSaleDetail(map));
 	}
 }

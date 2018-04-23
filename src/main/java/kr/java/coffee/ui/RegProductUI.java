@@ -3,6 +3,8 @@ package kr.java.coffee.ui;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -91,6 +93,7 @@ public class RegProductUI extends JFrame implements ActionListener {
 				product = getProduct();
 				ProductService.getInstance().updateProduct(product);
 				pdtTable.updateRow(product);
+				notifyObservers();
 				dispose();
 			} catch (Exception e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage());
@@ -149,4 +152,20 @@ public class RegProductUI extends JFrame implements ActionListener {
 	public void enableCodeTf(boolean isEnable) {
 		pCode.setEditableTf(isEnable);
 	}
+	
+	private List<Observer>observers = new ArrayList<Observer>() ;
+	
+	public void attach(Observer observer) { // 옵서버 즉 통보 대상을 추가함
+		observers.add(observer) ;
+	}	
+	
+	public void detach(Observer observer) { // 옵서버 즉 통보 대상을 제거함
+		observers.remove(observer) ;
+	}
+	
+	// 통보 대상 목록, 즉 observers의 각 옵서버에게 변경을 통보함
+	public void notifyObservers() {
+		for ( Observer o : observers ) o.update() ;
+	} 
+	
 }
