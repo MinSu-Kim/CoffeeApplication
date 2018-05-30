@@ -110,18 +110,18 @@ public class RegProductUI extends JFrame implements ActionListener {
 	}
 
 	public void clearValue() {
-		pCode.setTfVaue("");
-		pName.setTfVaue("");
-		pPrice.setTfVaue("");
+		pCode.setTfValue("");
+		pName.setTfValue("");
+		pPrice.setTfValue("");
 		btnAdd.setText("등록");
 		setTitle("상품 등록");
 		enableCodeTf(true);
 	}
 
 	public void setProduct(Product product) {
-		pCode.setTfVaue(product.getCode());
-		pName.setTfVaue(product.getName());
-		pPrice.setTfVaue(String.valueOf(product.getPrice()));
+		pCode.setTfValue(product.getCode());
+		pName.setTfValue(product.getName());
+		pPrice.setTfValue(String.valueOf(product.getPrice()));
 		btnAdd.setText("수정");
 	}
 

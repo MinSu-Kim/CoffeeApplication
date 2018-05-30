@@ -141,23 +141,23 @@ public class RegSaleUI extends JFrame implements ActionListener {
 
 	private void getNextNo() {
 		int nextNo = SaleService.getInstance().selectSaleByAll().size() + 1;
-		pNo.setTfVaue(String.valueOf(nextNo));
+		pNo.setTfValue(String.valueOf(nextNo));
 	}
 	
 	public void clearValue() {
 		pCode.setSelectedItem(null);
-		pSaleCnt.setTfVaue("");
-		pMarginRate.setTfVaue("");
+		pSaleCnt.setTfValue("");
+		pMarginRate.setTfValue("");
 		btnAdd.setText("등록");
 		setTitle("판매현황 등록");
 		getNextNo();
 	}
 
 	public void setSale(Sale sale) {
-		pNo.setTfVaue(String.valueOf(sale.getNo()));
+		pNo.setTfValue(String.valueOf(sale.getNo()));
 		pCode.setSelectedItem(sale.getProduct());
-		pSaleCnt.setTfVaue(String.valueOf(sale.getSaleCnt()));
-		pMarginRate.setTfVaue(String.valueOf(sale.getMarginRate()));
+		pSaleCnt.setTfValue(String.valueOf(sale.getSaleCnt()));
+		pMarginRate.setTfValue(String.valueOf(sale.getMarginRate()));
 		btnAdd.setText("수정");
 	}
 
