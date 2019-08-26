@@ -47,7 +47,8 @@ public class ProductDaoTest {
 	@Test
 	public void testBselectProductByNo() {
 		Product product = productService.selectProductByNo(new Product("A001"));
-		Assert.assertEquals("아메리카노", product.getName());
+		Product comparePdt = new Product("A001", "아메리카노");
+		Assert.assertEquals(comparePdt.getName(), product.getName());
 	}
 
 	@Test
