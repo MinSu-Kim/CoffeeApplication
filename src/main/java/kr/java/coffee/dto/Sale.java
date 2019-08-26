@@ -4,6 +4,7 @@ import kr.java.swinglibrary.component.ToArray;
 
 public class Sale implements ToArray{
 	private int no;
+	private int price;
 	private Product product; // 제품
 	private int saleCnt; // 판매수량
 	private int marginRate; // 마진율
@@ -16,15 +17,17 @@ public class Sale implements ToArray{
 		this.no = no;
 	}
 
-	public Sale(int no, Product product, int saleCnt, int marginRate) {
+	public Sale(int no, int price, Product product, int saleCnt, int marginRate) {
 		this.no = no;
+		this.price = price;
 		this.product = product;
 		this.saleCnt = saleCnt;
 		this.marginRate = marginRate;
 	}
 
-	public Sale(int no, Product product, int saleCnt, int marginRate, SaleDetail saleDetail) {
+	public Sale(int no, int price, Product product, int saleCnt, int marginRate, SaleDetail saleDetail) {
 		this.no = no;
+		this.price = price;
 		this.product = product;
 		this.saleCnt = saleCnt;
 		this.marginRate = marginRate;
@@ -71,9 +74,18 @@ public class Sale implements ToArray{
 		this.saleDetail = saleDetail;
 	}
 
+	
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
 	@Override
 	public String toString() {
-		return String.format("Sale [%s, %s, %s, %s, %s]", no, product, saleCnt, marginRate, saleDetail);
+		return String.format("Sale [%s, %s, %s, %s, %s, %s]", no, price, product, saleCnt, marginRate, saleDetail);
 	}
 
 	@Override
@@ -82,7 +94,7 @@ public class Sale implements ToArray{
 			return new Object[] { no, product.getCode(), saleCnt, marginRate+"%" };
 		}else {
 			return new Object[] { saleDetail.getRank(), product.getCode(), product.getName(), 
-					String.format("%,d", product.getPrice()), saleCnt, 
+					String.format("%,d", price), saleCnt, 
 					String.format("%,d", saleDetail.getSupplyPrice()), 
 					String.format("%,d", saleDetail.getAddTax()),
 					String.format("%,d", saleDetail.getSalePrice()), 

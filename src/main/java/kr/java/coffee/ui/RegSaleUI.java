@@ -39,6 +39,7 @@ public class RegSaleUI extends JFrame implements ActionListener {
 	private InputTextField pNo;
 
 	private List<Observer>observers = new ArrayList<Observer>() ;
+	private InputTextField pPrice;
 	
 	public void attach(Observer observer) { // 옵서버 즉 통보 대상을 추가함
 		observers.add(observer) ;
@@ -74,6 +75,10 @@ public class RegSaleUI extends JFrame implements ActionListener {
 		pCode = new InputCombo<>();
 		pCode.setLblValue("제품코드");
 		contentPane.add(pCode);
+		
+		pPrice = new InputTextField();
+		pPrice.setLblValue("제품단가");
+		contentPane.add(pPrice);
 
 		pSaleCnt = new InputTextField();
 		pSaleCnt.setLblValue("판매수량");
@@ -146,6 +151,7 @@ public class RegSaleUI extends JFrame implements ActionListener {
 	
 	public void clearValue() {
 		pCode.setSelectedItem(null);
+		pPrice.setTfValue("");
 		pSaleCnt.setTfValue("");
 		pMarginRate.setTfValue("");
 		btnAdd.setText("등록");
@@ -156,6 +162,7 @@ public class RegSaleUI extends JFrame implements ActionListener {
 	public void setSale(Sale sale) {
 		pNo.setTfValue(String.valueOf(sale.getNo()));
 		pCode.setSelectedItem(sale.getProduct());
+		pPrice.setTfValue(String.valueOf(sale.getPrice()));
 		pSaleCnt.setTfValue(String.valueOf(sale.getSaleCnt()));
 		pMarginRate.setTfValue(String.valueOf(sale.getMarginRate()));
 		btnAdd.setText("수정");
@@ -166,12 +173,14 @@ public class RegSaleUI extends JFrame implements ActionListener {
 		isValidCheck();
 		int no = Integer.parseInt(pNo.getTfValue());
 		Product product = (Product) pCode.getSelectedItem();
+		int price = Integer.parseInt(pPrice.getTfValue());
 		int saleCnt = Integer.parseInt(pSaleCnt.getTfValue());
 		int marginRate = Integer.parseInt(pMarginRate.getTfValue());
-		return new Sale(no, product, saleCnt, marginRate);
+		return new Sale(no, price, product, saleCnt, marginRate);
 	}
 
 	private void isValidCheck() throws Exception {
+		pPrice.isValidCheck("[0-9]{3,8}", "정수 3자리 이상 ~ 8자리만 가능");
 		pSaleCnt.isValidCheck("[0-9]{1,8}", "정수 8자리이하만 가능" );
 		pMarginRate.isValidCheck("[0-9]{1,2}", "정수 2자리 이하만  가능(예 : 마진율이 20%이면 20 입력)");
 	}
@@ -179,6 +188,7 @@ public class RegSaleUI extends JFrame implements ActionListener {
 	private void isEmptyValue() throws Exception {
 		pSaleCnt.isEmptyCheck();
 		pMarginRate.isEmptyCheck();
+		pPrice.isEmptyCheck();
 	}
 
 	public void setTable(AbstractTablePanel saleTable) {

@@ -5,7 +5,6 @@ import kr.java.swinglibrary.component.ToArray;
 public class Product implements ToArray{
 	private String code;
 	private String name;
-	private int price;
 	
 	
 	public Product() {
@@ -16,10 +15,9 @@ public class Product implements ToArray{
 		this.code = code;
 	}
 
-	public Product(String code, String name, int price) {
+	public Product(String code, String name) {
 		this.code = code;
 		this.name = name;
-		this.price = price;
 	}
 
 	public String getCode() {
@@ -38,17 +36,9 @@ public class Product implements ToArray{
 		this.name = name;
 	}
 
-	public int getPrice() {
-		return price;
-	}
-
-	public void setPrice(int price) {
-		this.price = price;
-	}
-
 	@Override
 	public String toString() {
-		return String.format("%s(%s - %s)", code, name, price);
+		return String.format("(%s - %s)", code, name);
 	}
 	
 	@Override
@@ -78,7 +68,7 @@ public class Product implements ToArray{
 
 	@Override
 	public Object[] toArray() {
-		return new Object[] {code, name, String.format("%,d", price)};
+		return new Object[] {code, name};
 	}
 	
 }

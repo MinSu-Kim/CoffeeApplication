@@ -27,7 +27,6 @@ public class RegProductUI extends JFrame implements ActionListener {
 	private AbstractTablePanel pdtTable;
 	private InputTextField pCode;
 	private InputTextField pName;
-	private InputTextField pPrice;
 	private JButton btnAdd;
 	
 	public static RegProductUI getInstance() {
@@ -54,10 +53,6 @@ public class RegProductUI extends JFrame implements ActionListener {
 		pName = new InputTextField();
 		pName.setLblValue("제품명");
 		contentPane.add(pName);
-
-		pPrice = new InputTextField();
-		pPrice.setLblValue("제품단가");
-		contentPane.add(pPrice);
 
 		JPanel pBtn = new JPanel();
 		contentPane.add(pBtn);
@@ -112,7 +107,6 @@ public class RegProductUI extends JFrame implements ActionListener {
 	public void clearValue() {
 		pCode.setTfValue("");
 		pName.setTfValue("");
-		pPrice.setTfValue("");
 		btnAdd.setText("등록");
 		setTitle("상품 등록");
 		enableCodeTf(true);
@@ -121,7 +115,7 @@ public class RegProductUI extends JFrame implements ActionListener {
 	public void setProduct(Product product) {
 		pCode.setTfValue(product.getCode());
 		pName.setTfValue(product.getName());
-		pPrice.setTfValue(String.valueOf(product.getPrice()));
+		
 		btnAdd.setText("수정");
 	}
 
@@ -130,19 +124,16 @@ public class RegProductUI extends JFrame implements ActionListener {
 		isValidCheck();
 		String code = pCode.getTfValue();
 		String name = pName.getTfValue();
-		int price = Integer.parseInt(pPrice.getTfValue());
-		return new Product(code, name, price);
+		return new Product(code, name);
 	}
 
 	private void isValidCheck() throws Exception {
 		pCode.isValidCheck("[A-Z][0-9]{3}", "첫글자는 A-Z 숫자 3자리만 가능");
-		pPrice.isValidCheck("[0-9]{3,8}", "정수 3자리 이상 ~ 8자리만 가능");
 	}
 
 	private void isEmptyValue() throws Exception {
 		pCode.isEmptyCheck();
 		pName.isEmptyCheck();
-		pPrice.isEmptyCheck();
 	}
 
 	public void setTable(AbstractTablePanel pdtTable) {

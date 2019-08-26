@@ -13,13 +13,13 @@ public class SaleTablePanel extends AbstractTablePanel {
 
 	@Override
 	protected void setAlignWith() {
-		tableCellAlignment(SwingConstants.CENTER, 0, 1, 2, 3);
-		tableSetWidth(100, 200, 100, 100);	
+		tableCellAlignment(SwingConstants.CENTER, 0, 1, 3, 4);
+		tableSetWidth(100, 200, 100, 100, 50);	
 	}
 
 	@Override
 	public void setColumnNames() {
-		colNames = new String[] { "번호", "제품코드", "판매수량", "마진율" };		
+		colNames = new String[] { "번호", "제품코드", "제품 단가", "판매수량", "마진율" };		
 	}
 
 }

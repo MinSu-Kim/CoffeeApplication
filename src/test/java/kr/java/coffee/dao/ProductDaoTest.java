@@ -52,14 +52,14 @@ public class ProductDaoTest {
 
 	@Test
 	public void testCinsertProduct() {
-		Product newProduct = new Product("A005", "캬라멜마키아또", 9000);
+		Product newProduct = new Product("A005", "캬라멜마키아또");
 		int res = productService.insertProduct(newProduct);
 		Assert.assertEquals(1, res);
 	}
 
 	@Test
 	public void testDupdateProduct() {
-		Product updateProduct = new Product("A005", "홍차", 10000);
+		Product updateProduct = new Product("A005", "홍차");
 		int res = productService.updateProduct(updateProduct);
 		Assert.assertEquals(1, res);
 	}

@@ -55,14 +55,14 @@ public class SaleDaoTest {
 
 	@Test
 	public void testCinsertProduct() {
-		Sale newSale = new Sale(5, new Product("A001"), 10, 10);
+		Sale newSale = new Sale(5, 9000, new Product("A001"), 10, 10);
 		int res = saleService.insertSale(newSale);
 		Assert.assertEquals(1, res);
 	}
 
 	@Test
 	public void testDupdateProduct() {
-		Sale newSale = new Sale(5, new Product("A001"), 1000, 20);
+		Sale newSale = new Sale(5, 8000, new Product("A001"), 1000, 20);
 		int res = saleService.updateSale(newSale);
 		Assert.assertEquals(1, res);
 	}
